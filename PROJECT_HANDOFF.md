@@ -1,0 +1,141 @@
+# Party Pocket — Project Handoff
+
+Last updated: 2026-09-08
+
+This file is the persistent handoff for ChatGPT/Codex sessions. The repository and latest `main` branch are the source of truth; this document gives a fast orientation so development can continue from a fresh chat.
+
+## Current identity
+
+- Repository: `kameusagiyahoo/party-pocket`
+- Default branch: `main`
+- GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
+- Current app/package version: `8.35.0`
+- Production merge at this handoff: `b14ddcc883ec806176c092c3367475ef06f3a13e`
+- App: Party Pocket
+- Hosting: GitHub Pages
+- Runtime: static PWA, no backend
+
+The repository used to have a temporary development name. Do not reintroduce any previous repository URL, Pages path, or remote name. Always use `party-pocket`.
+
+Before changing code, re-check `main`, `package.json`, `src/app.js`, `sw.js`, and the latest Actions runs.
+
+## Product constraints
+
+Party Pocket is a one-phone local game collection for 1–8 players.
+
+- One device / pass-and-play.
+- No backend server or external DB.
+- No Worker, WebSocket, or multi-device synchronization.
+- Persistent data uses `localStorage`.
+- PWA/offline support uses `manifest.webmanifest` and `sw.js`.
+- Production is GitHub Pages.
+- 24 production games.
+- Dedicated Solo difficulty/progress currently exists for Memory Flash, Number Route, and Pattern Code.
+
+## Architecture status
+
+The large architecture-refactor phase is complete.
+
+- `src/app.js` — thin bootstrap.
+- `src/app/runtime.js` — composition root.
+- `src/app/context-contract.js` — shared dependency validation.
+- `src/screens/**` — screen modules; major screen factories use `{app, context}`.
+- `src/games/index.js` — game registration.
+- `src/games/*.js` — independent game modules.
+- `src/core/*` — session, stats, backup, PWA, recommendations, history, analytics, experiments, etc.
+- `tests/context-architecture.test.js` protects the current architecture.
+
+Do not continue mechanical module/context splitting unless there is a concrete correctness, testing, or maintenance benefit.
+
+## Major existing capabilities
+
+- Single Game and Party Mode (3 / 6 / 9 rounds)
+- Smart Party Builder + preview
+- Favorites / Recent Games
+- Saved Parties
+- Player Groups / Quick Start
+- Party History / Recap
+- Local Stats
+- Player Profiles / Records
+- Achievements / Milestones
+- Shareable PNG result/profile cards
+- Season Board
+- Game Guide / Game Insights
+- Playtest Lab with 4-axis ratings
+- Playtest Event timeline and contextual segments
+- Game Health signals
+- Improvement Queue / Before-After experiments
+- Experiment Learnings / Learned Recommendations
+- Data Vault JSON backup/restore
+- PWA install/update/offline support
+
+## Recent completed milestones
+
+### v8.33.0 — architecture completion
+
+- Centralized context dependency validation.
+- 11 major screen contexts share the validator.
+- Added architecture invariant tests.
+
+### v8.34.0 — Number Sniper quality improvement
+
+`src/games/sniper.js` rotates public target multipliers: 60%, 70%, 100%, 120%. The same multiplier does not repeat consecutively. Closest gets 1 point; exact target gets 2. Deterministic tests cover the rule resolver.
+
+### v8.35.0 — 21 Bomb quality improvement
+
+`src/games/bomb.js` hides the exact bomb target and exposes only COLD / WARM / HOT / CRITICAL distance bands. The one-use PASS remains. Reaching or overshooting the hidden target explodes. Sensor/explosion tests were added.
+
+## Current development direction
+
+Focus on game quality rather than more architecture work. Prioritize:
+
+1. Replayability.
+2. Avoiding obvious dominant strategies.
+3. Meaningful player interaction and reading.
+4. Two-player viability.
+5. Fast, clear one-phone UX.
+6. Distinct interaction patterns across the 24 games.
+
+### Recommended next task
+
+Improve **Body Clock** (`src/games/clock.js`). The current loop is mainly start → estimate duration → stop, so replayability is weaker than the strongest games.
+
+Before implementing:
+
+- Fetch the exact current `clock.js` and guide from `main`.
+- Preserve the instantly understandable timing core.
+- Add round variation or player interaction without making pass-and-play cumbersome.
+- Extract deterministic scoring/rule helpers for tests.
+- Update the guide if mechanics change.
+- Check the actual current version before choosing the next version number.
+
+If the user asks for another task, follow the user instead.
+
+## Standard implementation workflow
+
+When the user says `次お願いします`, `お願いします`, or otherwise asks to continue development, perform the implementation rather than only describing it.
+
+1. Read `AGENTS.md` and this file.
+2. Fetch the latest relevant files from `main`.
+3. Confirm current app/package/SW version.
+4. Create a focused branch from current `main`.
+5. Implement the smallest coherent change.
+6. Add/update deterministic tests.
+7. Keep `sw.js` and `tests/pwa.test.js` aligned when adding runtime modules.
+8. Compare with `main` and ensure the branch is not behind.
+9. Open a PR.
+10. Merge only after PR CI succeeds.
+11. Prefer squash merge.
+12. Verify `main` CI.
+13. Verify GitHub Pages build, report-build-status, and deploy.
+14. Update this file whenever version, architecture, completed milestones, or the recommended next task changes.
+
+Do not report deployment success until the Pages deploy job succeeds.
+
+## Resume from another chat
+
+A fresh chat only needs this instruction:
+
+> `kameusagiyahoo/party-pocket` の開発を続けて。最初に `AGENTS.md` と `PROJECT_HANDOFF.md` を読んで、最新mainを確認してから続きの実装をして。
+
+That is the canonical cross-chat resume path.
