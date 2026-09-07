@@ -4,7 +4,7 @@
 
 - Repository: `kameusagiyahoo/party-pocket`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current version: `8.35.0`
+- Current version: `8.36.0`
 - Production games: 24
 
 ## Development handoff
@@ -66,7 +66,7 @@
 - 少数派
 - 数字スナイパー+
 - NGワード説明
-- 体内時計
+- 体内時計+
 - ギリギリ10
 
 ### Brain / Strategy
@@ -95,7 +95,11 @@
 
 爆発位置を完全公開せず、COLD / WARM / HOT / CRITICALの距離センサーだけを表示する方式へ改善しました。
 
-次の品質改善候補は `src/games/clock.js` の体内時計です。詳細は `PROJECT_HANDOFF.md` を参照してください。
+### v8.36.0 — 体内時計+
+
+JUST / NO OVER / NO EARLYの停止条件をラウンドごとに切り替える方式へ改善しました。同じ条件と目標秒数は連続せず、勝者が誤差0.10秒以内なら2点です。
+
+次の品質監査候補は `src/games/ten.js` のギリギリ10です。詳細は `PROJECT_HANDOFF.md` を参照してください。
 
 ## PWA / iPhone
 
