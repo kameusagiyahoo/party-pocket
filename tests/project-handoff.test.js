@@ -14,7 +14,7 @@ test('persistent handoff matches the current Party Pocket identity',()=>{
 });
 
 test('persistent handoff version matches package.json',()=>{
-  assert.match(handoff,new RegExp(`Current app/package version: \\`${pkg.version.replaceAll('.','\\.')}\\``));
+  assert.ok(handoff.includes('Current app/package version: `'+pkg.version+'`'));
 });
 
 test('handoff documents the resume workflow and next-task source of truth',()=>{
