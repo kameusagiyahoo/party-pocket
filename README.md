@@ -4,7 +4,7 @@
 
 - Repository: `kameusagiyahoo/party-pocket`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current version: `8.37.0`
+- Current version: `8.38.0`
 - Production games: 24
 
 ## Development handoff
@@ -60,7 +60,7 @@
 
 ### Light / Social
 
-- シンクロ
+- シンクロ+
 - 21ボム+
 - 5秒チャレンジ+
 - 少数派
@@ -103,7 +103,11 @@ JUST / NO OVER / NO EARLYの停止条件をラウンドごとに切り替える�
 
 正確な合計は最後まで秘密のまま、手番終了後にSAFE / HOT / PERFECT / BUSTの帯だけを公開する方式へ改善しました。次の人は前のプレイヤーの攻め具合を見てリスクを調整でき、開始プレイヤーもラウンドごとに交代します。
 
-次の品質監査候補は `src/games/sync.js` のシンクロです。詳細は `PROJECT_HANDOFF.md` を参照してください。
+### v8.38.0 — シンクロ+
+
+CROWD（全員に合わせる）とREAD（指定された1人を読む）を交互に出す方式へ改善しました。READでは基準役本人が本当の答えを選び、他の人がその人の答えを予想するため、同じお題でもメンバーによって読みが変わります。同じお題とREAD基準役は連続しません。
+
+次の品質監査候補は `src/games/five.js` の5秒チャレンジ+です。詳細は `PROJECT_HANDOFF.md` を参照してください。
 
 ## PWA / iPhone
 
