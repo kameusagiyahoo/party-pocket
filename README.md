@@ -4,7 +4,7 @@
 
 - Repository: `kameusagiyahoo/party-pocket`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current version: `8.36.0`
+- Current version: `8.37.0`
 - Production games: 24
 
 ## Development handoff
@@ -67,7 +67,7 @@
 - 数字スナイパー+
 - NGワード説明
 - 体内時計+
-- ギリギリ10
+- ギリギリ10+
 
 ### Brain / Strategy
 
@@ -99,7 +99,11 @@
 
 JUST / NO OVER / NO EARLYの停止条件をラウンドごとに切り替える方式へ改善しました。同じ条件と目標秒数は連続せず、勝者が誤差0.10秒以内なら2点です。
 
-次の品質監査候補は `src/games/ten.js` のギリギリ10です。詳細は `PROJECT_HANDOFF.md` を参照してください。
+### v8.37.0 — ギリギリ10+
+
+正確な合計は最後まで秘密のまま、手番終了後にSAFE / HOT / PERFECT / BUSTの帯だけを公開する方式へ改善しました。次の人は前のプレイヤーの攻め具合を見てリスクを調整でき、開始プレイヤーもラウンドごとに交代します。
+
+次の品質監査候補は `src/games/sync.js` のシンクロです。詳細は `PROJECT_HANDOFF.md` を参照してください。
 
 ## PWA / iPhone
 
