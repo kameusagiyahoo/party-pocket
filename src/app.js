@@ -1,7 +1,7 @@
 import {createAppState} from './app/state.js';
 import {createAppRuntime} from './app/runtime.js';
 
-const APP_VERSION='8.36.0';
+const APP_VERSION='8.37.0';
 
 const runtime=createAppRuntime({
   state:createAppState(),
