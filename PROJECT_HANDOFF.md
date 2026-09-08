@@ -9,7 +9,7 @@ This file is the persistent handoff for ChatGPT/Codex sessions. The repository a
 - Repository: `kameusagiyahoo/party-pocket`
 - Default branch: `main`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current app/package version: `8.37.0`
+- Current app/package version: `8.38.0`
 - App: Party Pocket
 - Hosting: GitHub Pages
 - Runtime: static PWA, no backend
@@ -96,14 +96,16 @@ The same rule and target do not repeat in consecutive rounds. If nobody satisfie
 
 ### v8.37.0 — ギリギリ10 quality improvement
 
-`src/games/ten.js` now keeps every exact total secret until SHOWDOWN but publishes one broad status after each completed turn:
+`src/games/ten.js` keeps exact totals secret until SHOWDOWN and publishes SAFE / HOT / PERFECT / BUST after each completed turn. Later players can use the pressure signal to decide how much risk to take. The starting player rotates each round. Deterministic tests cover signals, rotation, ties, and all-bust fallback.
 
-- SAFE — 1–6
-- HOT — 7–9
-- PERFECT — 10
-- BUST — 11+
+### v8.38.0 — Sync quality improvement
 
-Later players can use these public signals to decide how much risk to take instead of playing an isolated push-your-luck hand. The starting player rotates each round so the information advantage of acting later is not permanently assigned to the same seat. Exact totals and the existing winner rule remain unchanged. Deterministic tests cover signal boundaries, rotating turn order, safe winners, ties, and all-bust fallback.
+`src/games/sync.js` now alternates two social-reading modes:
+
+- CROWD — everyone tries to choose the answer most likely to match the group. Scoring remains matching-group size minus one.
+- READ — one player is the round target. The target answers honestly for themselves; everyone else predicts that target's answer. Correct predictors earn +1 and the target earns up to +2 based on how many people read them correctly.
+
+The same mode does not repeat, the same prompt does not repeat consecutively, and READ does not choose the same target twice in a row. This makes familiar prompts group-dependent rather than relying only on a larger prompt pool. Two-player READ works as a direct mutual-read round. Deterministic tests cover CROWD scoring, READ scoring, two-player behavior, mode alternation, prompt non-repeat, and target rotation.
 
 ## Current development direction
 
@@ -118,18 +120,18 @@ Focus on game quality rather than more architecture work. Prioritize:
 
 ### Recommended next task
 
-Audit and improve **シンクロ (`src/games/sync.js`)**.
+Audit and improve **5秒チャレンジ+ (`src/games/five.js`)**.
 
-Current concern: the core matching game is easy to understand, but many 4-choice prompts can converge on an obvious common answer and the free-answer pool can become familiar. Repeated rounds may therefore become more about prompt memorization than reading the current group.
+Current concern: the five-second pressure is immediately understandable, but repeated rounds can become a binary “did you say enough items in time?” loop. Difficulty selection exists, yet player-to-player interaction and round-to-round strategic variation may still be limited.
 
 Before implementing:
 
-- Fetch the exact current `sync.js` and guide from `main`.
-- Preserve the simple “match the group” social core.
-- Prefer meaningful round variation or group-dependent information over simply adding a larger prompt list.
-- Check whether 2-player behavior is distinct enough from 3+ players.
-- Keep secret-answer pass-and-play flow fast.
-- Extract deterministic scoring/rule helpers if mechanics change.
+- Fetch the exact current `five.js` and its guide from `main`.
+- Preserve the fast five-second core.
+- Audit the current difficulty system and task pool before adding new rules.
+- Prefer meaningful challenge variation or social pressure over simply adding more prompts.
+- Keep judging simple enough for one-phone party play.
+- Extract deterministic rule/scoring helpers when mechanics change.
 - Update the guide and this handoff when the version advances.
 
 If the user asks for another task, follow the user instead.
