@@ -9,8 +9,7 @@ This file is the persistent handoff for ChatGPT/Codex sessions. The repository a
 - Repository: `kameusagiyahoo/party-pocket`
 - Default branch: `main`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current app/package version: `8.35.0`
-- Production merge at this handoff: `b14ddcc883ec806176c092c3367475ef06f3a13e`
+- Current app/package version: `8.36.0`
 - App: Party Pocket
 - Hosting: GitHub Pages
 - Runtime: static PWA, no backend
@@ -85,6 +84,16 @@ Do not continue mechanical module/context splitting unless there is a concrete c
 
 `src/games/bomb.js` hides the exact bomb target and exposes only COLD / WARM / HOT / CRITICAL distance bands. The one-use PASS remains. Reaching or overshooting the hidden target explodes. Sensor/explosion tests were added.
 
+### v8.36.0 — Body Clock quality improvement
+
+`src/games/clock.js` keeps the hidden-timer core but rotates three public stopping rules:
+
+- JUST — smallest absolute error wins.
+- NO OVER — records at or below the target are eligible first.
+- NO EARLY — records at or above the target are eligible first.
+
+The same rule and target do not repeat in consecutive rounds. If nobody satisfies a directional rule, the round falls back to absolute error. A winning attempt within 0.10 seconds earns 2 points instead of 1. Deterministic tests cover side eligibility, fallback behavior, precision bonus, and non-repeating round generation.
+
 ## Current development direction
 
 Focus on game quality rather than more architecture work. Prioritize:
@@ -98,15 +107,18 @@ Focus on game quality rather than more architecture work. Prioritize:
 
 ### Recommended next task
 
-Improve **Body Clock** (`src/games/clock.js`). The current loop is mainly start → estimate duration → stop, so replayability is weaker than the strongest games.
+Audit and improve **ギリギリ10 (`src/games/ten.js`)**.
+
+Current concern: the basic draw/stop loop is understandable but may rely too heavily on random card draws and may not create enough player-to-player information or differentiated decisions across repeated rounds.
 
 Before implementing:
 
-- Fetch the exact current `clock.js` and guide from `main`.
-- Preserve the instantly understandable timing core.
-- Add round variation or player interaction without making pass-and-play cumbersome.
-- Extract deterministic scoring/rule helpers for tests.
-- Update the guide if mechanics change.
+- Fetch the exact current `ten.js` and its guide from `main`.
+- Preserve the instant-understandable push-your-luck core.
+- Check whether a dominant stop threshold emerges too easily.
+- Add meaningful round variation or public information rather than simply adding more randomness.
+- Keep one-phone turn flow fast.
+- Extract deterministic rule/scoring helpers and update the guide if mechanics change.
 - Check the actual current version before choosing the next version number.
 
 If the user asks for another task, follow the user instead.
