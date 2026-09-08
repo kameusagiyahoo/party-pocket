@@ -9,7 +9,7 @@ This file is the persistent handoff for ChatGPT/Codex sessions. The repository a
 - Repository: `kameusagiyahoo/party-pocket`
 - Default branch: `main`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current app/package version: `8.36.0`
+- Current app/package version: `8.37.0`
 - App: Party Pocket
 - Hosting: GitHub Pages
 - Runtime: static PWA, no backend
@@ -94,6 +94,17 @@ Do not continue mechanical module/context splitting unless there is a concrete c
 
 The same rule and target do not repeat in consecutive rounds. If nobody satisfies a directional rule, the round falls back to absolute error. A winning attempt within 0.10 seconds earns 2 points instead of 1. Deterministic tests cover side eligibility, fallback behavior, precision bonus, and non-repeating round generation.
 
+### v8.37.0 — ギリギリ10 quality improvement
+
+`src/games/ten.js` now keeps every exact total secret until SHOWDOWN but publishes one broad status after each completed turn:
+
+- SAFE — 1–6
+- HOT — 7–9
+- PERFECT — 10
+- BUST — 11+
+
+Later players can use these public signals to decide how much risk to take instead of playing an isolated push-your-luck hand. The starting player rotates each round so the information advantage of acting later is not permanently assigned to the same seat. Exact totals and the existing winner rule remain unchanged. Deterministic tests cover signal boundaries, rotating turn order, safe winners, ties, and all-bust fallback.
+
 ## Current development direction
 
 Focus on game quality rather than more architecture work. Prioritize:
@@ -107,19 +118,19 @@ Focus on game quality rather than more architecture work. Prioritize:
 
 ### Recommended next task
 
-Audit and improve **ギリギリ10 (`src/games/ten.js`)**.
+Audit and improve **シンクロ (`src/games/sync.js`)**.
 
-Current concern: the basic draw/stop loop is understandable but may rely too heavily on random card draws and may not create enough player-to-player information or differentiated decisions across repeated rounds.
+Current concern: the core matching game is easy to understand, but many 4-choice prompts can converge on an obvious common answer and the free-answer pool can become familiar. Repeated rounds may therefore become more about prompt memorization than reading the current group.
 
 Before implementing:
 
-- Fetch the exact current `ten.js` and its guide from `main`.
-- Preserve the instant-understandable push-your-luck core.
-- Check whether a dominant stop threshold emerges too easily.
-- Add meaningful round variation or public information rather than simply adding more randomness.
-- Keep one-phone turn flow fast.
-- Extract deterministic rule/scoring helpers and update the guide if mechanics change.
-- Check the actual current version before choosing the next version number.
+- Fetch the exact current `sync.js` and guide from `main`.
+- Preserve the simple “match the group” social core.
+- Prefer meaningful round variation or group-dependent information over simply adding a larger prompt list.
+- Check whether 2-player behavior is distinct enough from 3+ players.
+- Keep secret-answer pass-and-play flow fast.
+- Extract deterministic scoring/rule helpers if mechanics change.
+- Update the guide and this handoff when the version advances.
 
 If the user asks for another task, follow the user instead.
 
