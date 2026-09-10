@@ -4,7 +4,7 @@
 
 - Repository: `kameusagiyahoo/party-pocket`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current version: `8.38.0`
+- Current version: `8.39.0`
 - Production games: 24
 
 ## Development handoff
@@ -107,7 +107,11 @@ JUST / NO OVER / NO EARLYの停止条件をラウンドごとに切り替える�
 
 CROWD（全員に合わせる）とREAD（指定された1人を読む）を交互に出す方式へ改善しました。READでは基準役本人が本当の答えを選び、他の人がその人の答えを予想するため、同じお題でもメンバーによって読みが変わります。同じお題とREAD基準役は連続しません。
 
-次の品質監査候補は `src/games/five.js` の5秒チャレンジ+です。詳細は `PROJECT_HANDOFF.md` を参照してください。
+### v8.39.0 — 5秒チャレンジ+
+
+お題を見てからSAFEかRUSHを選ぶ方式へ改善しました。SAFEは従来の制限時間で成功+1、RUSHは1秒短くなる代わりに成功+2です。前のプレイヤーの選択と成功/失敗も表示されるため、セット内でリスクの基準が共有されます。
+
+次の品質監査候補は `src/games/minority.js` の少数派です。詳細は `PROJECT_HANDOFF.md` を参照してください。
 
 ## PWA / iPhone
 
