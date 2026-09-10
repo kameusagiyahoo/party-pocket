@@ -1,6 +1,6 @@
 # Party Pocket — Project Handoff
 
-Last updated: 2026-09-08
+Last updated: 2026-09-10
 
 This file is the persistent handoff for ChatGPT/Codex sessions. The repository and latest `main` branch are the source of truth; this document gives a fast orientation so development can continue from a fresh chat.
 
@@ -9,7 +9,7 @@ This file is the persistent handoff for ChatGPT/Codex sessions. The repository a
 - Repository: `kameusagiyahoo/party-pocket`
 - Default branch: `main`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current app/package version: `8.38.0`
+- Current app/package version: `8.39.0`
 - App: Party Pocket
 - Hosting: GitHub Pages
 - Runtime: static PWA, no backend
@@ -107,6 +107,15 @@ The same rule and target do not repeat in consecutive rounds. If nobody satisfie
 
 The same mode does not repeat, the same prompt does not repeat consecutively, and READ does not choose the same target twice in a row. This makes familiar prompts group-dependent rather than relying only on a larger prompt pool. Two-player READ works as a direct mutual-read round. Deterministic tests cover CROWD scoring, READ scoring, two-player behavior, mode alternation, prompt non-repeat, and target rotation.
 
+### v8.39.0 — Five Second Challenge quality improvement
+
+`src/games/five.js` preserves the fast category-answering core and adds a risk choice after the prompt is shown:
+
+- SAFE — use the normal difficulty time and earn +1 on success.
+- RUSH — reduce the timer by one second and earn +2 on success.
+
+Base times remain EASY=7s, NORMAL=5s, HARD=4s. Previous players' SAFE/RUSH choices and success/failure results are shown during the set, creating a visible pressure benchmark without adding extra phone passes. Deterministic tests cover difficulty times, SAFE/RUSH timing, scoring, failure behavior, and invalid configurations.
+
 ## Current development direction
 
 Focus on game quality rather than more architecture work. Prioritize:
@@ -120,18 +129,18 @@ Focus on game quality rather than more architecture work. Prioritize:
 
 ### Recommended next task
 
-Audit and improve **5秒チャレンジ+ (`src/games/five.js`)**.
+Audit and improve **少数派 (`src/games/minority.js`)**.
 
-Current concern: the five-second pressure is immediately understandable, but repeated rounds can become a binary “did you say enough items in time?” loop. Difficulty selection exists, yet player-to-player interaction and round-to-round strategic variation may still be limited.
+Current concern: the core minority-vote idea is clear, but the current metadata recommends 4+ players while the implementation also contains special behavior for smaller groups. The scoring and player-count rules should be audited so the game has a clear identity and does not overlap too heavily with Sync's social-reading loop.
 
 Before implementing:
 
-- Fetch the exact current `five.js` and its guide from `main`.
-- Preserve the fast five-second core.
-- Audit the current difficulty system and task pool before adding new rules.
-- Prefer meaningful challenge variation or social pressure over simply adding more prompts.
-- Keep judging simple enough for one-phone party play.
-- Extract deterministic rule/scoring helpers when mechanics change.
+- Fetch the exact current `minority.js`, catalog metadata, and guide from `main`.
+- Clarify the intended minimum player count and whether 2–3 player modes are worth supporting.
+- Preserve secret A/B voting and instant reveal.
+- Prefer a distinct minority-game decision pattern rather than copying Sync READ/CROWD mechanics.
+- Check ties, lone-minority scoring, and repeated-prompt behavior.
+- Extract deterministic scoring helpers when mechanics change.
 - Update the guide and this handoff when the version advances.
 
 If the user asks for another task, follow the user instead.
