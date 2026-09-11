@@ -1,6 +1,6 @@
 # Party Pocket — Project Handoff
 
-Last updated: 2026-09-10
+Last updated: 2026-09-11
 
 This file is the persistent handoff for ChatGPT/Codex sessions. The repository and latest `main` branch are the source of truth; this document gives a fast orientation so development can continue from a fresh chat.
 
@@ -9,7 +9,7 @@ This file is the persistent handoff for ChatGPT/Codex sessions. The repository a
 - Repository: `kameusagiyahoo/party-pocket`
 - Default branch: `main`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current app/package version: `8.39.0`
+- Current app/package version: `8.40.0`
 - App: Party Pocket
 - Hosting: GitHub Pages
 - Runtime: static PWA, no backend
@@ -116,6 +116,14 @@ The same mode does not repeat, the same prompt does not repeat consecutively, an
 
 Base times remain EASY=7s, NORMAL=5s, HARD=4s. Previous players' SAFE/RUSH choices and success/failure results are shown during the set, creating a visible pressure benchmark without adding extra phone passes. Deterministic tests cover difficulty times, SAFE/RUSH timing, scoring, failure behavior, and invalid configurations.
 
+### v8.40.0 — Minority quality improvement
+
+`src/games/minority.js` is now a true 3–8 player minority game. The old two-player rule, which rewarded matching and reversed the game's objective, was removed.
+
+Each round publicly marks one A/B option as BONUS +1 before voting. Players still vote secretly and score only if they land on the smaller side, but the bonus creates a self-balancing temptation: if too many players chase the bonus option it becomes the majority and scores nothing. Normal minority members earn +2, a lone minority earns +3, and a minority on the BONUS side earns an additional +1. Ties and unanimous votes score zero. Consecutive prompts do not repeat. Catalog metadata now lists Minority as 3–8 players and both social/strategy.
+
+Deterministic tests cover the 3-player minimum, normal and lone minority scoring, bonus scoring, ties, unanimous votes, invalid inputs, and prompt non-repeat.
+
 ## Current development direction
 
 Focus on game quality rather than more architecture work. Prioritize:
@@ -123,25 +131,25 @@ Focus on game quality rather than more architecture work. Prioritize:
 1. Replayability.
 2. Avoiding obvious dominant strategies.
 3. Meaningful player interaction and reading.
-4. Two-player viability.
+4. Two-player viability where the core mechanic genuinely supports it; do not invent an opposite-rule fallback merely to claim 2-player support.
 5. Fast, clear one-phone UX.
 6. Distinct interaction patterns across the 24 games.
 
 ### Recommended next task
 
-Audit and improve **少数派 (`src/games/minority.js`)**.
+Audit and improve **NGワード説明 (`src/games/taboo.js`)**.
 
-Current concern: the core minority-vote idea is clear, but the current metadata recommends 4+ players while the implementation also contains special behavior for smaller groups. The scoring and player-count rules should be audited so the game has a clear identity and does not overlap too heavily with Sync's social-reading loop.
+Current concern: the core forbidden-word explanation mechanic is recognizable and social, but repeated play may depend heavily on the fixed prompt/NG-word pool and binary success/failure judgment. The next pass should improve replayability or pressure without making judging cumbersome.
 
 Before implementing:
 
-- Fetch the exact current `minority.js`, catalog metadata, and guide from `main`.
-- Clarify the intended minimum player count and whether 2–3 player modes are worth supporting.
-- Preserve secret A/B voting and instant reveal.
-- Prefer a distinct minority-game decision pattern rather than copying Sync READ/CROWD mechanics.
-- Check ties, lone-minority scoring, and repeated-prompt behavior.
-- Extract deterministic scoring helpers when mechanics change.
-- Update the guide and this handoff when the version advances.
+- Fetch the exact current `taboo.js`, catalog metadata, and guide from `main`.
+- Preserve the fast one-phone explainer flow and hidden prompt/NG words.
+- Audit how the explainer rotates and how success/failure is scored.
+- Prefer a mechanic that creates meaningful pressure or choice rather than only adding more word cards.
+- Keep group judging simple.
+- Extract deterministic helpers if scoring or round generation changes.
+- Update the guide, README, and this handoff when the version advances.
 
 If the user asks for another task, follow the user instead.
 
