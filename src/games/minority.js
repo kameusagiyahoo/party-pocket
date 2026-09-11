@@ -88,7 +88,7 @@ function pass(ctx,state,life){
 
 function choose(ctx,state,life){
   if(life.destroyed)return;
-  ctx.root.innerHTML=`<div class="eyebrow">MINORITY · BONUS ${state.bonusSide==='0'?'A':'B'}</div><div class="prompt">${ctx.esc(state.prompt.q)}</div><div class="sub">人気が集まりすぎるとBONUS側でも多数派になる。</div><div class="choice-grid">${state.prompt.choices.map((choice,index)=>`<button class="choice" data-pick="${index}">${ctx.esc(choice)}${index===state.bonusSide?' · BONUS +1':''}</button>`).join('')}</div>`;
+  ctx.root.innerHTML=`<div class="eyebrow">MINORITY · BONUS ${state.bonusSide===0?'A':'B'}</div><div class="prompt">${ctx.esc(state.prompt.q)}</div><div class="sub">人気が集まりすぎるとBONUS側でも多数派になる。</div><div class="choice-grid">${state.prompt.choices.map((choice,index)=>`<button class="choice" data-pick="${index}">${ctx.esc(choice)}${index===state.bonusSide?' · BONUS +1':''}</button>`).join('')}</div>`;
   ctx.root.querySelectorAll('[data-pick]').forEach(button=>button.onclick=()=>submit(ctx,state,+button.dataset.pick,life));
 }
 
