@@ -4,7 +4,7 @@
 
 - Repository: `kameusagiyahoo/party-pocket`
 - GitHub Pages: `https://kameusagiyahoo.github.io/party-pocket/`
-- Current version: `8.39.0`
+- Current version: `8.40.0`
 - Production games: 24
 
 ## Development handoff
@@ -63,7 +63,7 @@
 - シンクロ+
 - 21ボム+
 - 5秒チャレンジ+
-- 少数派
+- 少数派+
 - 数字スナイパー+
 - NGワード説明
 - 体内時計+
@@ -111,7 +111,11 @@ CROWD（全員に合わせる）とREAD（指定された1人を読む）を交�
 
 お題を見てからSAFEかRUSHを選ぶ方式へ改善しました。SAFEは従来の制限時間で成功+1、RUSHは1秒短くなる代わりに成功+2です。前のプレイヤーの選択と成功/失敗も表示されるため、セット内でリスクの基準が共有されます。
 
-次の品質監査候補は `src/games/minority.js` の少数派です。詳細は `PROJECT_HANDOFF.md` を参照してください。
+### v8.40.0 — 少数派+
+
+2人時だけ一致を狙う逆ルールを廃止し、3〜8人専用へ整理しました。毎ラウンドA/Bの片方にBONUS +1が付き、その側へ人気が集まりすぎると多数派になって得点を失うため、単純な好み投票ではなく「他人がBONUSへ寄るか」まで読むゲームになっています。通常の少数派は+2、1人だけなら+3、BONUS側が少数ならさらに+1です。
+
+次の品質監査候補は `src/games/taboo.js` のNGワード説明です。詳細は `PROJECT_HANDOFF.md` を参照してください。
 
 ## PWA / iPhone
 
